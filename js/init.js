@@ -11,8 +11,23 @@ for (var i = 1; i <= 76; i++) {
 }
 
 var index = 0;
-var len = document.getElementById('btn-ul').children.length;
-console.log(len);
+var ul = document.getElementById('btn-ul');
+var len = ul.children.length;
+var width = ul.children[0].clientWidth;
+
+function left(){
+  if(index > 0) index--;
+  arrow();
+}
+
+function right(){
+  if(index < len - 1) index++;
+  arrow();
+}
+
+function arrow(){
+  ul.style.marginLeft = -index * width + 'px';
+}
 
 function prize(e,i) {
   e.setAttribute('disabled','disabled');
