@@ -58,16 +58,17 @@ function initVars(){
   seedTimer=0;seedInterval=5,seedLife=100;gravity=.02;
   seeds=new Array();
   sparkPics=new Array();
+  host = '../prize';
   for(i=1;i<=10;++i){
     sparkPic=new Image();
-    sparkPic.src="/img/spark"+i+".png";
+    sparkPic.src=host+"/img/spark"+i+".png";
     sparkPics.push(sparkPic);
   }
   sparks=new Array();
-  pow1=new Audio("/audio/pow1.ogg");
-  pow2=new Audio("/audio/pow2.ogg");
-  pow3=new Audio("/audio/pow3.ogg");
-  pow4=new Audio("/audio/pow4.ogg");
+  pow1=new Audio(host+"/audio/pow1.ogg");
+  pow2=new Audio(host+"/audio/pow2.ogg");
+  pow3=new Audio(host+"/audio/pow3.ogg");
+  pow4=new Audio(host+"/audio/pow4.ogg");
   frames = 0;
 }
 
@@ -165,10 +166,10 @@ function splode(x,y,z){
     sparks.push(spark);
   }
   switch(parseInt(Math.random()*4)){
-    case 0:	pow=new Audio("/audio/pow1.ogg"); break;
-    case 1:	pow=new Audio("/audio/pow2.ogg"); break;
-    case 2:	pow=new Audio("/audio/pow3.ogg"); break;
-    case 3:	pow=new Audio("/audio/pow4.ogg"); break;
+    case 0:	pow=new Audio(host+"/audio/pow1.ogg"); break;
+    case 1:	pow=new Audio(host+"/audio/pow2.ogg"); break;
+    case 2:	pow=new Audio(host+"/audio/pow3.ogg"); break;
+    case 3:	pow=new Audio(host+"/audio/pow4.ogg"); break;
   }
   d=Math.sqrt((x-playerX)*(x-playerX)+(y-playerY)*(y-playerY)+(z-playerZ)*(z-playerZ));
   pow.volume=1.5/(1+d/10);
