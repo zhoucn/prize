@@ -6,7 +6,8 @@ Array.prototype.removeByValue = function (val) {
   }
 }
 var arr = [];
-for (var i = 1; i <= 76; i++) {
+for (var i = 1; i <= 176; i++) {
+  i < 10 ? i = '00' + i : (i < 99 ? i = '0' + i : i = '' + i);
   arr.push(i);
 }
 
