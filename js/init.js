@@ -6,44 +6,84 @@ Array.prototype.removeByValue = function (val) {
   }
 }
 var arr = [];
-for (var i = 1; i <= 176; i++) {
+for (var i = 1; i <= 76; i++) {
   i < 10 ? i = '00' + i : (i < 99 ? i = '0' + i : i = '' + i);
   arr.push(i);
 }
 
-var index = 0;
-var ul = document.getElementById('btn-ul');
-var len = ul.children.length;
-var width = ul.children[0].clientWidth;
-
-function left(){
-  if(index > 0) index--;
-  arrow();
+var li = '';
+for(var i = 0; i <= 9; i++){
+  li += '<li>' + i + '</li>';
 }
+li = '<div><ul>' + li + '</ul></div>';
+li = li + '' + li + '' + li;
+li = '<li>' + li + '</li>';
 
-function right(){
-  if(index < len - 1) index++;
-  arrow();
-}
-
-function arrow(){
-  ul.style.marginLeft = -index * width + 'px';
-}
-
+//抽奖
+var p = [];
 function prize(e,i) {
+  var ul = '';
   e.setAttribute('disabled','disabled');
   if(!i){
     arr.forEach(function(e){
-      console.log(e);
+      // console.log(e);
+      p.push(e);
+      ul += li;
     })
+    localStorage.setItem('特别奖',p);
   }
   for (var j = 0; j < i; j++) {
     var len = arr.length;
     var e = Math.round(Math.random() * len);
-    console.log(arr[e]);
+    // console.log(arr[e]);
+    p.push(arr[e]);
+    ul += li;
     arr.removeByValue(arr[e]);
   }
+  if(i == 1){
+    localStorage.setItem('幸运奖',p);
+  }else if(i == 2){
+    localStorage.setItem('特等奖',p);
+  }else if(i == 3){
+    localStorage.setItem('一等奖',p);
+  }else if(i == 10){
+    localStorage.setItem('二等奖',p);
+  }else if(i == 15){
+    localStorage.setItem('三等奖',p);
+  }else if(i == 20){
+    localStorage.setItem('四等奖',p);
+  }
+  document.getElementById('prize-ul').innerHTML = ul;
+  document.getElementById('stop').style.display = 'block';
 }
+
+//停止
+function stop(){
+  p.forEach(function(e,index){
+    var li_id = document.getElementById('prize-ul').children[index];
+    for(var i = 0; i < e.length; i++){
+      li_id.getElementsByTagName('div')[i].getElementsByTagName('ul')[0].setAttribute('class','num' + e[i]);
+    }
+  });
+  document.getElementById('stop').style.display = 'none';
+}
+
+var bg_canvas = document.getElementById('bg-canvas');
+    bg_canvas.width=canvas.clientWidth;
+    bg_canvas.height=canvas.clientHeight;
+var bx = bg_canvas.width / 2,
+    by = bg_canvas.height / 2;
+function bg(){
+  var bg_ctx = bg_canvas.getContext('2d'),
+      img = new Image();
+  img.src = '/img/logo.png';
+  bg_ctx.drawImage(img,0,0,img.width,img.height,bx-(img.width/2),by-(img.height/2),img.width,img.height);
+  var imgData = bg_ctx.getImageData(bx-(img.width/2),by-(img.height/2),img.width,img.height);
+  bg_ctx.clearRect(0,0,bg_canvas.width,bg_canvas.height);
+  console.log(imgData);
+  bg_ctx.putImageData(imgData,bx-(img.width/2),by-(img.height/2));
+}
+bg();
 
 function initVars(){
   pi=Math.PI;
@@ -58,7 +98,7 @@ function initVars(){
   seedTimer=0;seedInterval=5,seedLife=100;gravity=.02;
   seeds=new Array();
   sparkPics=new Array();
-  host = '../prize';
+  host = ''; //'../prize';
   for(i=1;i<=10;++i){
     sparkPic=new Image();
     sparkPic.src=host+"/img/spark"+i+".png";
@@ -73,7 +113,6 @@ function initVars(){
 }
 
 function rasterizePoint(x,y,z){
-
   var p,d;
   x-=playerX;
   y-=playerY;
@@ -107,7 +146,6 @@ function rasterizePoint(x,y,z){
 }
 
 function spawnSeed(){
-
   seed=new Object();
   seed.x=-50+Math.random()*100;
   seed.y=25;
@@ -120,7 +158,6 @@ function spawnSeed(){
 }
 
 function splode(x,y,z){
-
   t=5+parseInt(Math.random()*150);
   sparkV=1+Math.random()*2.5;
   type=parseInt(Math.random()*3);
@@ -177,7 +214,6 @@ function splode(x,y,z){
 }
 
 function doLogic(){
-
   if(seedTimer<frames){
     seedTimer=frames+seedInterval*Math.random()*10;
     spawnSeed();
@@ -233,17 +269,14 @@ function doLogic(){
 }
 
 function rgb(col){
-
-  var r = parseInt((.5+Math.sin(col)*.5)*16);
-  var g = parseInt((.5+Math.cos(col)*.5)*16);
-  var b = parseInt((.5-Math.sin(col)*.5)*16);
+  var r = parseInt((0.5+Math.sin(col)*0.5)*16);
+  var g = parseInt((0.5+Math.cos(col)*0.5)*16);
+  var b = parseInt((0.5-Math.sin(col)*0.5)*16);
   return "#"+r.toString(16)+g.toString(16)+b.toString(16);
 }
 
 function draw(){
-
   ctx.clearRect(0,0,cx*2,cy*2);
-
   ctx.fillStyle="#ff8";
   /*for(i=-100;i<100;i+=3){
     for(j=-100;j<100;j+=4){
@@ -310,7 +343,6 @@ function draw(){
 }
 
 function frame(){
-
   if(frames>100000){
     seedTimer=0;
     frames=0;
@@ -322,11 +354,32 @@ function frame(){
 }
 
 window.addEventListener("resize",function(){
+  bg_canvas.width=canvas.clientWidth;
+  bg_canvas.height=canvas.clientHeight;
   canvas.width=canvas.clientWidth;
   canvas.height=canvas.clientHeight;
   cx=canvas.width/2;
   cy=canvas.height/2;
 });
+
+var index = 0;
+var ul = document.getElementById('btn-ul');
+var len = ul.children.length;
+var width = ul.children[0].clientWidth;
+
+function left(){
+  if(index > 0) index--;
+  arrow();
+}
+
+function right(){
+  if(index < len - 1) index++;
+  arrow();
+}
+
+function arrow(){
+  ul.style.marginLeft = -index * width + 'px';
+}
 
 initVars();
 //frame();

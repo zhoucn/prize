@@ -6,24 +6,15 @@
     <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
-<div class="logo-bg"></div>
+<!--<div class="logo-bg"></div>-->
+<canvas id="bg-canvas"></canvas>
 <canvas id="canvas"></canvas>
+<!--<h1 class="title">新海通年会抽奖活动</h1>-->
 <div class="container">
-    <ul>
-        <li>
-            <div>
-                <ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li></ul>
-            </div>
-            <div>
-                <ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li></ul>
-            </div>
-            <div>
-                <ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li></ul>
-            </div>
-        </li>
-    </ul>
+    <ul id="prize-ul"></ul>
 </div>
 <div class="btn-div">
+    <div id="stop" class="stop" onclick="stop();">STOP</div>
     <div class="arrow left" onclick="left();"></div>
     <div class="arrow right" onclick="right();"></div>
     <div class="btn-ul-div">
@@ -44,7 +35,10 @@
                 <button onclick="prize(this,2);frame();">特等奖</button>
             </li>
             <li>
-                <button onclick="prize(this);">安慰奖</button>
+                <button onclick="prize(this);">特别奖</button>
+            </li>
+            <li>
+                <button onclick="prize(this,1);">幸运奖</button>
             </li>
         </ul>
     </div>
