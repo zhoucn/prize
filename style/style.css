@@ -25,6 +25,7 @@ li {
   bottom: 0;
   z-index: 1;
   background: url('../img/logo.png') no-repeat center center;
+  background-size:contain;
   opacity: 0.1;
 }
 
@@ -33,7 +34,7 @@ canvas {
   height: 100%;
 }
 
-#img{
+img{
   display: none;
 }
 
@@ -44,14 +45,14 @@ canvas {
   right:0;
   bottom:0;
   z-index:999;
-  background: -webkit-radial-gradient(#ffef25, #ff0000);
-  background: radial-gradient(#ffef25, #ff0000);
+  background: -webkit-radial-gradient(#ffef25, #ff0000 90%);
+  background: radial-gradient(#ffef25, #ff0000 90%);
 }
 
 .title {
   margin: 0;
   position: absolute;
-  top: 0;
+  top: 30px;
   left: 0;
   right: 0;
   z-index: 9;
@@ -84,6 +85,7 @@ canvas {
 }
 
 .container > ul > li > div {
+  height: 100%;
   display: inline-block;
   margin: 0 1px;
 }
@@ -165,7 +167,7 @@ canvas {
 }
 
 .container > ul > li > div ul li {
-  padding: 2px 15px;
+  padding: 4px 15px;
   font-size: 32px;
   color: #f00;
   font-weight: bold;
@@ -173,7 +175,7 @@ canvas {
 
 .btn-div {
   position: absolute;
-  bottom: 80px;
+  bottom: 50px;
   left: 50%;
   z-index: 99;
   -webkit-transform: translateX(-50%);

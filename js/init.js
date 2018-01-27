@@ -5,6 +5,7 @@ Array.prototype.removeByValue = function (val) {
     }
   }
 }
+
 var arr = [];
 for (var i = 1; i <= 76; i++) {
   i < 10 ? i = '00' + i : (i < 99 ? i = '0' + i : i = '' + i);
@@ -20,38 +21,37 @@ li = li + '' + li + '' + li;
 li = '<li>' + li + '</li>';
 
 //抽奖
-var p = [];
+var pz = [];
 function prize(e,i) {
+  pz = [];
   var ul = '';
   e.setAttribute('disabled','disabled');
   if(!i){
     arr.forEach(function(e){
-      // console.log(e);
-      p.push(e);
+      pz.push(e);
       ul += li;
     })
-    localStorage.setItem('特别奖',p);
+    localStorage.setItem('特别奖',pz);
   }
   for (var j = 0; j < i; j++) {
     var len = arr.length;
     var e = Math.round(Math.random() * len);
-    // console.log(arr[e]);
-    p.push(arr[e]);
+    pz.push(arr[e]);
     ul += li;
     arr.removeByValue(arr[e]);
   }
   if(i == 1){
-    localStorage.setItem('幸运奖',p);
+    localStorage.setItem('幸运奖',pz);
   }else if(i == 2){
-    localStorage.setItem('特等奖',p);
+    localStorage.setItem('特等奖',pz);
   }else if(i == 3){
-    localStorage.setItem('一等奖',p);
+    localStorage.setItem('一等奖',pz);
   }else if(i == 10){
-    localStorage.setItem('二等奖',p);
+    localStorage.setItem('二等奖',pz);
   }else if(i == 15){
-    localStorage.setItem('三等奖',p);
+    localStorage.setItem('三等奖',pz);
   }else if(i == 20){
-    localStorage.setItem('四等奖',p);
+    localStorage.setItem('四等奖',pz);
   }
   document.getElementById('prize-ul').innerHTML = ul;
   document.getElementById('stop').style.display = 'block';
@@ -59,31 +59,91 @@ function prize(e,i) {
 
 //停止
 function stop(){
-  p.forEach(function(e,index){
+  pz.forEach(function(e,index){
     var li_id = document.getElementById('prize-ul').children[index];
     for(var i = 0; i < e.length; i++){
-      li_id.getElementsByTagName('div')[i].getElementsByTagName('ul')[0].setAttribute('class','num' + e[i]);
+      li_id.children[i].children[0].setAttribute('class','num' + e[i]);
     }
   });
   document.getElementById('stop').style.display = 'none';
 }
 
-var bg_canvas = document.getElementById('bg-canvas');
-    bg_canvas.width=canvas.clientWidth;
-    bg_canvas.height=canvas.clientHeight;
-var bx = bg_canvas.width / 2,
-    by = bg_canvas.height / 2;
-function bg(){
-  var bg_ctx = bg_canvas.getContext('2d'),
-      img = new Image();
-  img.src = '/img/logo.png';
-  bg_ctx.drawImage(img,0,0,img.width,img.height,bx-(img.width/2),by-(img.height/2),img.width,img.height);
-  var imgData = bg_ctx.getImageData(bx-(img.width/2),by-(img.height/2),img.width,img.height);
+bg_canvas = document.getElementById('bg-canvas');
+bg_ctx = bg_canvas.getContext('2d');
+img = document.getElementById('img');
+img0 = document.getElementById('img0');
+img1 = document.getElementById('img1');
+img2 = document.getElementById('img2');
+img3 = document.getElementById('img3');
+bg_canvas.width=canvas.clientWidth;
+bg_canvas.height=canvas.clientHeight;
+bx = parseInt(bg_canvas.width / 2 - img.width / 2);
+by = parseInt(bg_canvas.height / 2 - img.height / 2);
+imgData = [];
+datas = [];
+
+function calculate(img){
   bg_ctx.clearRect(0,0,bg_canvas.width,bg_canvas.height);
-  console.log(imgData);
-  bg_ctx.putImageData(imgData,bx-(img.width/2),by-(img.height/2));
+  imgData = [];
+  datas = [];
+  bg_ctx.drawImage(img,0,0,img.width,img.height,bx,by,img.width,img.height);
+  imgData = bg_ctx.getImageData(bx,by,img.width,img.height);
+  imgData = imgData.data;
+
+  var cols = img.height / 2,
+      rows = img.width / 2,
+      pos = 0,
+      data = imgData;
+  for(var i = 1; i <= cols; i++){
+    for(var j = 1; j <= rows; j++){
+      pos = [(j * 2 - 1) * img.width  + (i * 2 - 1)] * 4;
+      if(data[pos] >= 0){
+        var particle = {
+          x: bx + i * 2,
+          mx : bx + i * 2 + (0.5 - Math.random()) * 3000,
+          y: by + j * 2,
+          my : by + j * 2 + (0.5 - Math.random()) * 3000,
+          fillStyle : 'rgba(' + data[pos] + ',' + data[pos + 1] + ',' + data[pos + 2] + ',' + data[pos + 3] + ')'
+        }
+        datas.push(particle);
+      }
+    }
+  }
 }
-bg();
+var stopD = null;
+function pDraw(){
+  stopD = window.requestAnimationFrame(pDraw);
+  bg_ctx.clearRect(0,0,bg_canvas.width,bg_canvas.height);
+  var len = datas.length,
+      rdata = null;
+  for(var i = 0; i < len; i++){
+    rdata = datas[i];
+    if(rdata.mx < rdata.x){
+      rdata.mx += Math.random() * 260;
+      rdata.mx > rdata.x ? rdata.mx = rdata.x : rdata.mx = rdata.mx;
+    }else{
+      rdata.mx -= Math.random() * 190;
+      rdata.mx < rdata.x ? rdata.mx = rdata.x : rdata.mx = rdata.mx;
+    }
+    if(rdata.my < rdata.y){
+      rdata.my += Math.random() * 180;
+      rdata.my > rdata.y ? rdata.my = rdata.y : rdata.my = rdata.my;
+    }else{
+      rdata.my -= Math.random() * 240;
+      rdata.my < rdata.y ? rdata.my = rdata.y : rdata.my = rdata.my;
+    }
+
+    bg_ctx.fillStyle = rdata.fillStyle;
+    bg_ctx.fillRect(rdata.mx,rdata.my,2,2);
+
+    //圆形
+    /*bg_ctx.beginPath();
+    bg_ctx.arc(rdata.mx,rdata.my,3,0,360);
+    bg_ctx.fillStyle = rdata.fillStyle;
+    bg_ctx.fill();
+    bg_ctx.closePath();*/
+  }
+}
 
 function initVars(){
   pi=Math.PI;
@@ -278,21 +338,6 @@ function rgb(col){
 function draw(){
   ctx.clearRect(0,0,cx*2,cy*2);
   ctx.fillStyle="#ff8";
-  /*for(i=-100;i<100;i+=3){
-    for(j=-100;j<100;j+=4){
-      x=i;z=j;y=25;
-      point=rasterizePoint(x,y,z);
-      if(point.d!=-1){
-        size=250/(1+point.d);
-        d = Math.sqrt(x * x + z * z);
-        a = 0.75 - Math.pow(d / 100, 6) * 0.75;
-        if(a>0){
-          ctx.globalAlpha = a;
-          ctx.fillRect(point.x-size/2,point.y-size/2,size,size);
-        }
-      }
-    }
-  }*/
   ctx.globalAlpha=1;
   for(i=0;i<seeds.length;++i){
     point=rasterizePoint(seeds[i].x,seeds[i].y,seeds[i].z);
@@ -356,6 +401,8 @@ function frame(){
 window.addEventListener("resize",function(){
   bg_canvas.width=canvas.clientWidth;
   bg_canvas.height=canvas.clientHeight;
+  bx = parseInt(bg_canvas.width / 2 - img.width / 2);
+  by = parseInt(bg_canvas.height / 2 - img.height / 2);
   canvas.width=canvas.clientWidth;
   canvas.height=canvas.clientHeight;
   cx=canvas.width/2;
@@ -381,5 +428,26 @@ function arrow(){
   ul.style.marginLeft = -index * width + 'px';
 }
 
-initVars();
 //frame();
+window.onload = function(){
+  initVars();
+  calculate(img);
+  pDraw();
+  setTimeout(function(){
+    calculate(img3);
+    setTimeout(function(){
+      calculate(img2);
+      setTimeout(function(){
+        calculate(img1);
+        setTimeout(function(){
+          calculate(img0);
+          setTimeout(function(){
+            window.cancelAnimationFrame(stopD);
+            bg_canvas.remove();
+            frame();
+          },5000);
+        },5000);
+      },5000);
+    },5000);
+  },8000);
+}
