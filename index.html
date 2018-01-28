@@ -8,42 +8,76 @@
 <body>
 <h1 class="title">新海通年会抽奖活动</h1>
 <div class="logo-bg"></div>
-<img id="img" src="/img/logo1.png" width="480" height="480">
-<img id="img0" src="/img/0.png" width="480" height="480">
-<img id="img1" src="/img/1.png" width="480" height="480">
-<img id="img2" src="/img/2.png" width="480" height="480">
-<img id="img3" src="/img/3.png" width="480" height="480">
+<img id="img" src="./img/logo1.png" width="480" height="480">
+<img id="img0" src="./img/0.png" width="480" height="480">
+<img id="img1" src="./img/1.png" width="480" height="480">
+<img id="img2" src="./img/2.png" width="480" height="480">
+<img id="img3" src="./img/3.png" width="480" height="480">
 <canvas id="bg-canvas"></canvas>
 <canvas id="canvas"></canvas>
 <div class="container">
     <ul id="prize-ul"></ul>
 </div>
+<div id="prize-container">
+    <div id="prize-bg"></div>
+    <div class="prize-div">
+        <div class="preze-content">
+            <h3>特等奖</h3>
+            <ul id="pt"></ul>
+        </div>
+        <div class="preze-content">
+            <h3>幸运奖</h3>
+            <ul id="px"></ul>
+        </div>
+        <div class="preze-content">
+            <h3>一等奖</h3>
+            <ul id="p1"></ul>
+        </div>
+        <div class="preze-content">
+            <h3>二等奖</h3>
+            <ul id="p2"></ul>
+        </div>
+        <div class="preze-content">
+            <h3>三等奖</h3>
+            <ul id="p3"></ul>
+        </div>
+        <div class="preze-content">
+            <h3>四等奖</h3>
+            <ul id="p4"></ul>
+        </div>
+        <div class="preze-content">
+            <h3>特别奖</h3>
+            <ul id="pb"></ul>
+        </div>
+    </div>
+</div>
+<a href="javascript:;" id="list-btn">中奖名单</a>
 <div class="btn-div">
-    <div id="stop" class="stop" onclick="stop();">STOP</div>
+    <div id="stop" class="stop">STOP</div>
     <div class="arrow left" onclick="left();"></div>
     <div class="arrow right" onclick="right();"></div>
     <div class="btn-ul-div">
         <ul id="btn-ul">
             <li>
-                <button onclick="prize(this,20);">四等奖</button>
+                <button id="btn4">四等奖</button>
             </li>
             <li>
-                <button onclick="prize(this,15);">三等奖</button>
+                <button id="btn3">三等奖</button>
             </li>
             <li>
-                <button onclick="prize(this,10);">二等奖</button>
+                <button id="btn2">二等奖</button>
             </li>
             <li>
-                <button onclick="prize(this,3);">一等奖</button>
+                <button id="btn1">一等奖</button>
             </li>
             <li>
-                <button onclick="prize(this,2);frame();">特等奖</button>
+                <button id="btnt">特等奖</button>
             </li>
             <li>
-                <button onclick="prize(this);">特别奖</button>
+                <button id="btnb">特别奖</button>
             </li>
             <li>
-                <button onclick="prize(this,1);">幸运奖</button>
+                <button id="btnx">幸运奖</button>
             </li>
         </ul>
     </div>

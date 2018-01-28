@@ -1,73 +1,3 @@
-Array.prototype.removeByValue = function (val) {
-  for (var i = 0; i < this.length; i++) {
-    if (this[i] == val) {
-      this.splice(i, 1);
-    }
-  }
-}
-
-var arr = [];
-for (var i = 1; i <= 76; i++) {
-  i < 10 ? i = '00' + i : (i < 99 ? i = '0' + i : i = '' + i);
-  arr.push(i);
-}
-
-var li = '';
-for(var i = 0; i <= 9; i++){
-  li += '<li>' + i + '</li>';
-}
-li = '<div><ul>' + li + '</ul></div>';
-li = li + '' + li + '' + li;
-li = '<li>' + li + '</li>';
-
-//抽奖
-var pz = [];
-function prize(e,i) {
-  pz = [];
-  var ul = '';
-  e.setAttribute('disabled','disabled');
-  if(!i){
-    arr.forEach(function(e){
-      pz.push(e);
-      ul += li;
-    })
-    localStorage.setItem('特别奖',pz);
-  }
-  for (var j = 0; j < i; j++) {
-    var len = arr.length;
-    var e = Math.round(Math.random() * len);
-    pz.push(arr[e]);
-    ul += li;
-    arr.removeByValue(arr[e]);
-  }
-  if(i == 1){
-    localStorage.setItem('幸运奖',pz);
-  }else if(i == 2){
-    localStorage.setItem('特等奖',pz);
-  }else if(i == 3){
-    localStorage.setItem('一等奖',pz);
-  }else if(i == 10){
-    localStorage.setItem('二等奖',pz);
-  }else if(i == 15){
-    localStorage.setItem('三等奖',pz);
-  }else if(i == 20){
-    localStorage.setItem('四等奖',pz);
-  }
-  document.getElementById('prize-ul').innerHTML = ul;
-  document.getElementById('stop').style.display = 'block';
-}
-
-//停止
-function stop(){
-  pz.forEach(function(e,index){
-    var li_id = document.getElementById('prize-ul').children[index];
-    for(var i = 0; i < e.length; i++){
-      li_id.children[i].children[0].setAttribute('class','num' + e[i]);
-    }
-  });
-  document.getElementById('stop').style.display = 'none';
-}
-
 bg_canvas = document.getElementById('bg-canvas');
 bg_ctx = bg_canvas.getContext('2d');
 img = document.getElementById('img');
@@ -90,19 +20,20 @@ function calculate(img){
   imgData = bg_ctx.getImageData(bx,by,img.width,img.height);
   imgData = imgData.data;
 
-  var cols = img.height / 2,
-      rows = img.width / 2,
+  var w = 2,
+      cols = img.height / w,
+      rows = img.width / w
       pos = 0,
       data = imgData;
   for(var i = 1; i <= cols; i++){
     for(var j = 1; j <= rows; j++){
-      pos = [(j * 2 - 1) * img.width  + (i * 2 - 1)] * 4;
+      pos = [(j * w - 1) * img.width  + (i * w - 1)] * 4;
       if(data[pos] >= 0){
         var particle = {
-          x: bx + i * 2,
-          mx : bx + i * 2 + (0.5 - Math.random()) * 3000,
-          y: by + j * 2,
-          my : by + j * 2 + (0.5 - Math.random()) * 3000,
+          x: bx + i * w,
+          mx : bg_canvas.width / 2,
+          y: by + j * w,
+          my : bg_canvas.height / 2,
           fillStyle : 'rgba(' + data[pos] + ',' + data[pos + 1] + ',' + data[pos + 2] + ',' + data[pos + 3] + ')'
         }
         datas.push(particle);
@@ -119,17 +50,17 @@ function pDraw(){
   for(var i = 0; i < len; i++){
     rdata = datas[i];
     if(rdata.mx < rdata.x){
-      rdata.mx += Math.random() * 260;
+      rdata.mx += Math.random() * 60;
       rdata.mx > rdata.x ? rdata.mx = rdata.x : rdata.mx = rdata.mx;
     }else{
-      rdata.mx -= Math.random() * 190;
+      rdata.mx -= Math.random() * 90;
       rdata.mx < rdata.x ? rdata.mx = rdata.x : rdata.mx = rdata.mx;
     }
     if(rdata.my < rdata.y){
-      rdata.my += Math.random() * 180;
+      rdata.my += Math.random() * 80;
       rdata.my > rdata.y ? rdata.my = rdata.y : rdata.my = rdata.my;
     }else{
-      rdata.my -= Math.random() * 240;
+      rdata.my -= Math.random() * 40;
       rdata.my < rdata.y ? rdata.my = rdata.y : rdata.my = rdata.my;
     }
 
@@ -428,11 +359,21 @@ function arrow(){
   ul.style.marginLeft = -index * width + 'px';
 }
 
+
+Array.prototype.removeByValue = function (val) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] == val) {
+      this.splice(i, 1);
+    }
+  }
+}
 //frame();
 window.onload = function(){
   initVars();
-  calculate(img);
   pDraw();
+  setTimeout(function(){
+    calculate(img);
+  },2000);
   setTimeout(function(){
     calculate(img3);
     setTimeout(function(){
@@ -450,4 +391,100 @@ window.onload = function(){
       },5000);
     },5000);
   },8000);
+
+  document.getElementById('btnt').addEventListener('click',function(){prize(this,2)},false);
+  document.getElementById('btnx').addEventListener('click',function(){prize(this,1)},false);
+  document.getElementById('btnb').addEventListener('click',function(){prize(this)},false);
+  document.getElementById('btn1').addEventListener('click',function(){prize(this,3)},false);
+  document.getElementById('btn2').addEventListener('click',function(){prize(this,10)},false);
+  document.getElementById('btn3').addEventListener('click',function(){prize(this,15)},false);
+  document.getElementById('btn4').addEventListener('click',function(){prize(this,20)},false);
+  document.getElementById('stop').addEventListener('click',function(){stop()},false);
+
+  document.getElementById('list-btn').addEventListener('click',function(){
+    document.getElementById('prize-container').setAttribute('class','active');
+  },false);
+  document.getElementById('prize-bg').addEventListener('click',function(){
+    document.getElementById('prize-container').removeAttribute('class');
+  },false);
+
+  var arr = [];
+  for (var i = 1; i <= 76; i++) {
+    i < 10 ? i = '00' + i : (i < 99 ? i = '0' + i : i = '' + i);
+    arr.push(i);
+  }
+
+  var li = '';
+  for(var i = 0; i <= 9; i++){
+    li += '<li>' + i + '</li>';
+  }
+  li = '<div><ul>' + li + '</ul></div>';
+  li = li + '' + li + '' + li;
+  li = '<li>' + li + '</li>';
+
+  //抽奖
+  var pz = [];
+  function prize(el,n) {
+    pz = [];
+    var ul = '';
+    var pli = '';
+    el.setAttribute('disabled','disabled');
+    if(!n){
+      arr.forEach(function(ae){
+        pz.push(ae);
+        ul += li;
+        pli += '<li>' + ae + '</li>';
+      })
+      localStorage.setItem('特别奖',pz);
+      document.getElementById('pb').innerHTML = pli;
+    }else{
+      for (var j = 0; j < n; j++) {
+        var len = arr.length - 1;
+        var ai = Math.round(Math.random() * len);
+        pz.push(arr[ai]);
+        ul += li;
+        pli += '<li>' + arr[ai] + '</li>';
+        arr.removeByValue(arr[ai]);
+      }
+      console.log(arr);
+      console.log('====');
+    }
+    // console.log(arr);
+    // if(!arr){
+    //   alert(88)
+    // }
+    // console.log('====');
+    if(n == 1){
+      localStorage.setItem('幸运奖',pz);
+      document.getElementById('px').innerHTML = pli;
+    }else if(n == 2){
+      localStorage.setItem('特等奖',pz);
+      document.getElementById('pt').innerHTML = pli;
+    }else if(n == 3){
+      localStorage.setItem('一等奖',pz);
+      document.getElementById('p1').innerHTML = pli;
+    }else if(n == 10){
+      localStorage.setItem('二等奖',pz);
+      document.getElementById('p2').innerHTML = pli;
+    }else if(n == 15){
+      localStorage.setItem('三等奖',pz);
+      document.getElementById('p3').innerHTML = pli;
+    }else if(n == 20){
+      localStorage.setItem('四等奖',pz);
+      document.getElementById('p4').innerHTML = pli;
+    }
+    document.getElementById('prize-ul').innerHTML = ul;
+    document.getElementById('stop').style.display = 'block';
+  }
+
+  //停止
+  function stop(){
+    pz.forEach(function(el,index){
+      var li_id = document.getElementById('prize-ul').children[index];
+      for(var i = 0; i < el.length; i++){
+        li_id.children[i].children[0].setAttribute('class','num' + el[i]);
+      }
+    });
+    document.getElementById('stop').style.display = 'none';
+  }
 }
