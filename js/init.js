@@ -437,6 +437,7 @@ window.onload = function(){
       })
       localStorage.setItem('特别奖',pz);
       document.getElementById('pb').innerHTML = pli;
+      document.getElementById('btnx').setAttribute('disabled','disabled');
     }else{
       for (var j = 0; j < n; j++) {
         var len = arr.length - 1;
@@ -446,14 +447,8 @@ window.onload = function(){
         pli += '<li>' + arr[ai] + '</li>';
         arr.removeByValue(arr[ai]);
       }
-      console.log(arr);
-      console.log('====');
     }
-    // console.log(arr);
-    // if(!arr){
-    //   alert(88)
-    // }
-    // console.log('====');
+
     if(n == 1){
       localStorage.setItem('幸运奖',pz);
       document.getElementById('px').innerHTML = pli;
