@@ -1,81 +1,3 @@
-/*bg_canvas = document.getElementById('bg-canvas');
-bg_ctx = bg_canvas.getContext('2d');
-img = document.getElementById('img');
-img0 = document.getElementById('img0');
-img1 = document.getElementById('img1');
-img2 = document.getElementById('img2');
-img3 = document.getElementById('img3');
-bg_canvas.width=canvas.clientWidth;
-bg_canvas.height=canvas.clientHeight;
-bx = parseInt(bg_canvas.width / 2 - img.width / 2);
-by = parseInt(bg_canvas.height / 2 - img.height / 2);
-imgData = [];
-datas = [];*/
-
-function calculate(img){
-  bg_ctx.clearRect(0,0,bg_canvas.width,bg_canvas.height);
-  imgData = [];
-  datas = [];
-  bg_ctx.drawImage(img,0,0,img.width,img.height,bx,by,img.width,img.height);
-  imgData = bg_ctx.getImageData(bx,by,img.width,img.height);
-  imgData = imgData.data;
-
-  var w = 2,
-      cols = img.height / w,
-      rows = img.width / w
-      pos = 0,
-      data = imgData;
-  for(var i = 1; i <= cols; i++){
-    for(var j = 1; j <= rows; j++){
-      pos = [(j * w - 1) * img.width  + (i * w - 1)] * 4;
-      if(data[pos] >= 0){
-        var particle = {
-          x: bx + i * w,
-          mx : bg_canvas.width / 2,
-          y: by + j * w,
-          my : bg_canvas.height / 2,
-          fillStyle : 'rgba(' + data[pos] + ',' + data[pos + 1] + ',' + data[pos + 2] + ',' + data[pos + 3] + ')'
-        }
-        datas.push(particle);
-      }
-    }
-  }
-}
-var stopD = null;
-function pDraw(){
-  stopD = window.requestAnimationFrame(pDraw);
-  bg_ctx.clearRect(0,0,bg_canvas.width,bg_canvas.height);
-  var len = datas.length,
-      rdata = null;
-  for(var i = 0; i < len; i++){
-    rdata = datas[i];
-    if(rdata.mx < rdata.x){
-      rdata.mx += Math.random() * 60;
-      rdata.mx > rdata.x ? rdata.mx = rdata.x : rdata.mx = rdata.mx;
-    }else{
-      rdata.mx -= Math.random() * 90;
-      rdata.mx < rdata.x ? rdata.mx = rdata.x : rdata.mx = rdata.mx;
-    }
-    if(rdata.my < rdata.y){
-      rdata.my += Math.random() * 80;
-      rdata.my > rdata.y ? rdata.my = rdata.y : rdata.my = rdata.my;
-    }else{
-      rdata.my -= Math.random() * 40;
-      rdata.my < rdata.y ? rdata.my = rdata.y : rdata.my = rdata.my;
-    }
-
-    bg_ctx.fillStyle = rdata.fillStyle;
-    bg_ctx.fillRect(rdata.mx,rdata.my,2,2);
-
-    //圆形
-    /*bg_ctx.beginPath();
-    bg_ctx.arc(rdata.mx,rdata.my,3,0,360);
-    bg_ctx.fillStyle = rdata.fillStyle;
-    bg_ctx.fill();
-    bg_ctx.closePath();*/
-  }
-}
-
 function initVars(){
   pi=Math.PI;
   ctx=canvas.getContext("2d");
@@ -385,7 +307,7 @@ window.onload = function(){
   initVars();
 
   document.getElementById('btnt').addEventListener('click',function(){prize(this,2)},false);
-  document.getElementById('btnx').addEventListener('click',function(){prize(this,1)},false);
+  document.getElementById('btnx').addEventListener('click',function(){prize(this,1);document.getElementById('px-content').style.display = 'block';},false);
   document.getElementById('btnb').addEventListener('click',function(){prize(this)},false);
   document.getElementById('btn1').addEventListener('click',function(){prize(this,3)},false);
   document.getElementById('btn2').addEventListener('click',function(){prize(this,10)},false);
@@ -393,6 +315,9 @@ window.onload = function(){
   document.getElementById('btn4').addEventListener('click',function(){prize(this,20)},false);
   document.getElementById('stop').addEventListener('click',function(){stop()},false);
 
+  document.getElementById('clear').addEventListener('click',function(){
+    localStorage.clear();
+  },false);
   document.getElementById('repair').addEventListener('click',function(){
     var pt = localStorage.getItem('特等奖');
     var px = localStorage.getItem('幸运奖');
@@ -401,7 +326,62 @@ window.onload = function(){
     var p2 = localStorage.getItem('二等奖');
     var p3 = localStorage.getItem('三等奖');
     var p4 = localStorage.getItem('四等奖');
-    console.log(pt);
+    if(pt){
+      var li = '';
+      document.getElementById('btnt').setAttribute('disabled','disabled');
+      pt.split(',').forEach(function(e){
+        li += '<li>' + e + '</li>';
+      });
+      document.getElementById('pt').innerHTML = li;
+    }
+    if(px){
+      var li = '';
+      document.getElementById('btnx').setAttribute('disabled','disabled');
+      px.split(',').forEach(function(e){
+        li += '<li>' + e + '</li>';
+      });
+      document.getElementById('px').innerHTML = li;
+    }
+    if(pb){
+      var li = '';
+      document.getElementById('btnb').setAttribute('disabled','disabled');
+      pb.split(',').forEach(function(e){
+        li += '<li>' + e + '</li>';
+      });
+      document.getElementById('pb').innerHTML = li;
+    }
+    if(p1){
+      var li = '';
+      document.getElementById('btn1').setAttribute('disabled','disabled');
+      p1.split(',').forEach(function(e){
+        li += '<li>' + e + '</li>';
+      });
+      document.getElementById('p1').innerHTML = li;
+    }
+    if(p2){
+      var li = '';
+      document.getElementById('btn2').setAttribute('disabled','disabled');
+      p2.split(',').forEach(function(e){
+        li += '<li>' + e + '</li>';
+      });
+      document.getElementById('p2').innerHTML = li;
+    }
+    if(p3){
+      var li = '';
+      document.getElementById('btn3').setAttribute('disabled','disabled');
+      p3.split(',').forEach(function(e){
+        li += '<li>' + e + '</li>';
+      });
+      document.getElementById('p3').innerHTML = li;
+    }
+    if(p4){
+      var li = '';
+      document.getElementById('btn4').setAttribute('disabled','disabled');
+      p4.split(',').forEach(function(e){
+        li += '<li>' + e + '</li>';
+      });
+      document.getElementById('p4').innerHTML = li;
+    }
   },false);
 
   document.getElementById('list-btn').addEventListener('click',function(){
