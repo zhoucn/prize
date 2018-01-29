@@ -8,12 +8,16 @@
 <body>
 <h1 class="title">新海通年会抽奖活动</h1>
 <div class="logo-bg"></div>
-<img id="img" src="./img/logo1.png" width="480" height="480">
-<img id="img0" src="./img/0.png" width="480" height="480">
-<img id="img1" src="./img/1.png" width="480" height="480">
-<img id="img2" src="./img/2.png" width="480" height="480">
-<img id="img3" src="./img/3.png" width="480" height="480">
-<canvas id="bg-canvas"></canvas>
+<!--<img id="img" src="./img/logo1.png" width="480" height="480">-->
+<!--<img id="img0" src="./img/0.png" width="480" height="480">-->
+<!--<img id="img1" src="./img/1.png" width="480" height="480">-->
+<!--<img id="img2" src="./img/2.png" width="480" height="480">-->
+<!--<img id="img3" src="./img/3.png" width="480" height="480">-->
+<!--<canvas id="bg-canvas"></canvas>-->
+<div id="bg-canvas">
+    <div class="bg-half left-half"><div class="img-box"><img src="./img/logo1.png" width="480" height="480"></div></div>
+    <div class="bg-half right-half"><div class="img-box"><img src="./img/logo1.png" width="480" height="480"></div></div>
+</div>
 <canvas id="canvas"></canvas>
 <div class="container">
     <ul id="prize-ul"></ul>
@@ -51,6 +55,7 @@
         </div>
     </div>
 </div>
+<a href="javascript:;" id="repair">修复</a>
 <a href="javascript:;" id="list-btn">中奖名单</a>
 <div class="btn-div">
     <div id="stop" class="stop">STOP</div>

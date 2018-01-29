@@ -1,4 +1,4 @@
-bg_canvas = document.getElementById('bg-canvas');
+/*bg_canvas = document.getElementById('bg-canvas');
 bg_ctx = bg_canvas.getContext('2d');
 img = document.getElementById('img');
 img0 = document.getElementById('img0');
@@ -10,7 +10,7 @@ bg_canvas.height=canvas.clientHeight;
 bx = parseInt(bg_canvas.width / 2 - img.width / 2);
 by = parseInt(bg_canvas.height / 2 - img.height / 2);
 imgData = [];
-datas = [];
+datas = [];*/
 
 function calculate(img){
   bg_ctx.clearRect(0,0,bg_canvas.width,bg_canvas.height);
@@ -330,10 +330,6 @@ function frame(){
 }
 
 window.addEventListener("resize",function(){
-  bg_canvas.width=canvas.clientWidth;
-  bg_canvas.height=canvas.clientHeight;
-  bx = parseInt(bg_canvas.width / 2 - img.width / 2);
-  by = parseInt(bg_canvas.height / 2 - img.height / 2);
   canvas.width=canvas.clientWidth;
   canvas.height=canvas.clientHeight;
   cx=canvas.width/2;
@@ -369,28 +365,24 @@ Array.prototype.removeByValue = function (val) {
 }
 //frame();
 window.onload = function(){
-  initVars();
-  pDraw();
   setTimeout(function(){
-    calculate(img);
-  },2000);
-  setTimeout(function(){
-    calculate(img3);
+    var img = document.getElementsByClassName('img-box');
+    for(var i = 0; i < img.length; i++){
+      img[i].setAttribute('class','img-box bounce');
+    }
     setTimeout(function(){
-      calculate(img2);
+      var img = document.getElementsByClassName('bg-half');
+      for(var i = 0; i < img.length; i++){
+        img[i].setAttribute('data-animate','true');
+      }
       setTimeout(function(){
-        calculate(img1);
-        setTimeout(function(){
-          calculate(img0);
-          setTimeout(function(){
-            window.cancelAnimationFrame(stopD);
-            bg_canvas.remove();
-            frame();
-          },5000);
-        },5000);
-      },5000);
-    },5000);
-  },8000);
+        document.getElementById('bg-canvas').remove();
+      },2000);
+      frame();
+    },2000)
+  },1000);
+
+  initVars();
 
   document.getElementById('btnt').addEventListener('click',function(){prize(this,2)},false);
   document.getElementById('btnx').addEventListener('click',function(){prize(this,1)},false);
