@@ -393,6 +393,17 @@ window.onload = function(){
   document.getElementById('btn4').addEventListener('click',function(){prize(this,20)},false);
   document.getElementById('stop').addEventListener('click',function(){stop()},false);
 
+  document.getElementById('repair').addEventListener('click',function(){
+    var pt = localStorage.getItem('特等奖');
+    var px = localStorage.getItem('幸运奖');
+    var pb = localStorage.getItem('特别奖');
+    var p1 = localStorage.getItem('一等奖');
+    var p2 = localStorage.getItem('二等奖');
+    var p3 = localStorage.getItem('三等奖');
+    var p4 = localStorage.getItem('四等奖');
+    console.log(pt);
+  },false);
+
   document.getElementById('list-btn').addEventListener('click',function(){
     document.getElementById('prize-container').setAttribute('class','active');
   },false);
