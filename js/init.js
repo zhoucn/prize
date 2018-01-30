@@ -270,6 +270,7 @@ function left(){
 
 function right(){
   if(index < len - 1) index++;
+  document.getElementById('prize-ul').innerHTML = '';
   arrow();
 }
 
@@ -318,8 +319,6 @@ window.onload = function(){
 
   document.getElementById('btnt1').addEventListener('click',function(){prize(this,1,'特等奖');},false);
   document.getElementById('btnt2').addEventListener('click',function(){prize(this,1,'特等奖');},false);
-  // document.getElementById('btnx').addEventListener('click',function(){prize(this,1);document.getElementById('px-content').style.display = 'block';},false);
-  // document.getElementById('btnb').addEventListener('click',function(){len -= 1;prize(this);document.getElementById('btnR').style.display = 'none';},false);
   document.getElementById('btn11').addEventListener('click',function(){prize(this,1,'一等奖')},false);
   document.getElementById('btn12').addEventListener('click',function(){prize(this,1,'一等奖');},false);
   document.getElementById('btn13').addEventListener('click',function(){prize(this,1,'一等奖');},false);
@@ -341,31 +340,18 @@ window.onload = function(){
     var p4 = localStorage.getItem('四等奖');
     if(pt){
       var li = '';
-      document.getElementById('btnt').setAttribute('disabled','disabled');
+      document.getElementById('btnt1').setAttribute('disabled','disabled');
+      document.getElementById('btnt2').setAttribute('disabled','disabled');
       pt.split(',').forEach(function(e){
         li += '<li>' + e + '</li>';
       });
       document.getElementById('pt').innerHTML = li;
     }
-    if(px){
-      var li = '';
-      document.getElementById('btnx').setAttribute('disabled','disabled');
-      px.split(',').forEach(function(e){
-        li += '<li>' + e + '</li>';
-      });
-      document.getElementById('px').innerHTML = li;
-    }
-    if(pb){
-      var li = '';
-      document.getElementById('btnb').setAttribute('disabled','disabled');
-      pb.split(',').forEach(function(e){
-        li += '<li>' + e + '</li>';
-      });
-      document.getElementById('pb').innerHTML = li;
-    }
     if(p1){
       var li = '';
-      document.getElementById('btn1').setAttribute('disabled','disabled');
+      document.getElementById('btn11').setAttribute('disabled','disabled');
+      document.getElementById('btn12').setAttribute('disabled','disabled');
+      document.getElementById('btn13').setAttribute('disabled','disabled');
       p1.split(',').forEach(function(e){
         li += '<li>' + e + '</li>';
       });
@@ -420,21 +406,14 @@ window.onload = function(){
 
   //抽奖
   var pz = [];
+  var audio = document.getElementById('audio');
   function prize(el,n,string) {
+    audio.currentTime = 0;
+    audio.play();
     pz = [];
     var ul = '';
     var pli = '';
     el.setAttribute('disabled','disabled');
-    /*if(!n){
-      arr.forEach(function(ae){
-        pz.push(ae);
-        ul += li;
-        pli += '<li>' + ae + '</li>';
-      })
-      localStorage.setItem('特别奖',pz);
-      document.getElementById('pb').innerHTML = pli;
-      document.getElementById('btnx').setAttribute('disabled','disabled');
-    }else{*/
     for (var j = 0; j < n; j++) {
       var len = arr.length - 1;
       var ai = Math.round(Math.random() * len);
@@ -443,18 +422,6 @@ window.onload = function(){
       pli += '<li>' + arr[ai] + '</li>';
       arr.removeByValue(arr[ai]);
     }
-    /*}*/
-
-    /*if(n == 1){
-      localStorage.setItem('幸运奖',pz);
-      document.getElementById('px').innerHTML = pli;
-    }else if(n == 2){
-      localStorage.setItem('特等奖',pz);
-      document.getElementById('pt').innerHTML = pli;
-    }else if(n == 3){
-      localStorage.setItem('一等奖',pz);
-      document.getElementById('p1').innerHTML = pli;
-    }else */
     if(n == 1){
       var pli = '';
       var ss = '';
@@ -489,6 +456,8 @@ window.onload = function(){
 
   //停止
   function stop(){
+    audio.pause();
+    audio.currentTime = 0;
     pz.forEach(function(el,index){
       var li_id = document.getElementById('prize-ul').children[index];
       for(var i = 0; i < el.length; i++){

@@ -17,6 +17,10 @@ li {
   list-style: none;
 }
 
+audio{
+    display: none;
+}
+
 .logo-bg {
   position: absolute;
   top: 0;
@@ -246,10 +250,11 @@ canvas {
 }
 
 .container > ul > li > div ul li {
-  padding: 4px 22px;
+  padding: 0px 22px;
   font-size: 50px;
   color: #f00;
   font-weight: bold;
+  line-height: 70px;
 }
 
 #prize-container {
