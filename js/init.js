@@ -274,6 +274,16 @@ function right(){
 }
 
 function arrow(){
+  if(index == 0){
+    document.getElementById('btnL').style.display = 'none';
+  }else{
+    document.getElementById('btnL').style.display = 'block';
+  }
+  if(index == len - 1){
+    document.getElementById('btnR').style.display = 'none';
+  }else{
+    document.getElementById('btnR').style.display = 'block';
+  }
   ul.style.marginLeft = -index * width + 'px';
 }
 
@@ -302,14 +312,17 @@ window.onload = function(){
       },2000);
       frame();
     },2000)
-  },1000);
+  },2000);
 
   initVars();
 
-  document.getElementById('btnt').addEventListener('click',function(){prize(this,2)},false);
-  document.getElementById('btnx').addEventListener('click',function(){prize(this,1);document.getElementById('px-content').style.display = 'block';},false);
-  document.getElementById('btnb').addEventListener('click',function(){prize(this)},false);
-  document.getElementById('btn1').addEventListener('click',function(){prize(this,3)},false);
+  document.getElementById('btnt1').addEventListener('click',function(){prize(this,1,'特等奖');},false);
+  document.getElementById('btnt2').addEventListener('click',function(){prize(this,1,'特等奖');},false);
+  // document.getElementById('btnx').addEventListener('click',function(){prize(this,1);document.getElementById('px-content').style.display = 'block';},false);
+  // document.getElementById('btnb').addEventListener('click',function(){len -= 1;prize(this);document.getElementById('btnR').style.display = 'none';},false);
+  document.getElementById('btn11').addEventListener('click',function(){prize(this,1,'一等奖')},false);
+  document.getElementById('btn12').addEventListener('click',function(){prize(this,1,'一等奖');},false);
+  document.getElementById('btn13').addEventListener('click',function(){prize(this,1,'一等奖');},false);
   document.getElementById('btn2').addEventListener('click',function(){prize(this,10)},false);
   document.getElementById('btn3').addEventListener('click',function(){prize(this,15)},false);
   document.getElementById('btn4').addEventListener('click',function(){prize(this,20)},false);
@@ -407,12 +420,12 @@ window.onload = function(){
 
   //抽奖
   var pz = [];
-  function prize(el,n) {
+  function prize(el,n,string) {
     pz = [];
     var ul = '';
     var pli = '';
     el.setAttribute('disabled','disabled');
-    if(!n){
+    /*if(!n){
       arr.forEach(function(ae){
         pz.push(ae);
         ul += li;
@@ -421,18 +434,18 @@ window.onload = function(){
       localStorage.setItem('特别奖',pz);
       document.getElementById('pb').innerHTML = pli;
       document.getElementById('btnx').setAttribute('disabled','disabled');
-    }else{
-      for (var j = 0; j < n; j++) {
-        var len = arr.length - 1;
-        var ai = Math.round(Math.random() * len);
-        pz.push(arr[ai]);
-        ul += li;
-        pli += '<li>' + arr[ai] + '</li>';
-        arr.removeByValue(arr[ai]);
-      }
+    }else{*/
+    for (var j = 0; j < n; j++) {
+      var len = arr.length - 1;
+      var ai = Math.round(Math.random() * len);
+      pz.push(arr[ai]);
+      ul += li;
+      pli += '<li>' + arr[ai] + '</li>';
+      arr.removeByValue(arr[ai]);
     }
+    /*}*/
 
-    if(n == 1){
+    /*if(n == 1){
       localStorage.setItem('幸运奖',pz);
       document.getElementById('px').innerHTML = pli;
     }else if(n == 2){
@@ -441,6 +454,25 @@ window.onload = function(){
     }else if(n == 3){
       localStorage.setItem('一等奖',pz);
       document.getElementById('p1').innerHTML = pli;
+    }else */
+    if(n == 1){
+      var pli = '';
+      var ss = '';
+      if(localStorage.getItem(string)){
+        ss = localStorage.getItem(string) + ','
+      }else{
+        ss = '';
+      }
+      localStorage.setItem(string,ss + pz);
+      var pstring = localStorage.getItem(string).split(',');
+      pstring.forEach(function(e){
+        pli += '<li>' + e + '</li>';
+      });
+      if(string == '特等奖'){
+        document.getElementById('pt').innerHTML = pli;
+      }else if(string == '一等奖'){
+        document.getElementById('p1').innerHTML = pli;
+      }
     }else if(n == 10){
       localStorage.setItem('二等奖',pz);
       document.getElementById('p2').innerHTML = pli;
