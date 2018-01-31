@@ -123,7 +123,7 @@ function splode(x,y,z){
   }
   d=Math.sqrt((x-playerX)*(x-playerX)+(y-playerY)*(y-playerY)+(z-playerZ)*(z-playerZ));
   pow.volume=1.5/(1+d/10);
-  pow.play();
+  //pow.play();
 }
 
 function doLogic(){
@@ -298,22 +298,25 @@ Array.prototype.removeByValue = function (val) {
 }
 //frame();
 window.onload = function(){
-  setTimeout(function(){
-    var img = document.getElementsByClassName('img-box');
-    for(var i = 0; i < img.length; i++){
-      img[i].setAttribute('class','img-box bounce');
-    }
-    setTimeout(function(){
-      var img = document.getElementsByClassName('bg-half');
-      for(var i = 0; i < img.length; i++){
-        img[i].setAttribute('data-animate','true');
-      }
-      setTimeout(function(){
-        document.getElementById('bg-canvas').remove();
-      },2000);
-      frame();
-    },2000)
-  },2000);
+  // document.getElementById('start-btn').addEventListener('click',function(e){
+  //   e.target.remove();
+  //   setTimeout(function(){
+  //     var img = document.getElementsByClassName('img-box');
+  //     for(var i = 0; i < img.length; i++){
+  //       img[i].setAttribute('class','img-box bounce');
+  //     }
+  //     setTimeout(function(){
+  //       var img = document.getElementsByClassName('bg-half');
+  //       for(var i = 0; i < img.length; i++){
+  //         img[i].setAttribute('data-animate','true');
+  //       }
+  //       setTimeout(function(){
+  //         document.getElementById('bg-canvas').remove();
+  //       },2000);
+  //       frame();
+  //     },2000)
+  //   },2000);
+  // },false);
 
   initVars();
 
@@ -406,13 +409,11 @@ window.onload = function(){
 
   //抽奖
   var pz = [];
-  var audio = document.getElementById('audio');
   function prize(el,n,string) {
-    audio.currentTime = 0;
-    audio.play();
     pz = [];
     var ul = '';
     var pli = '';
+    var prize_ul = document.getElementById('prize-ul');
     el.setAttribute('disabled','disabled');
     for (var j = 0; j < n; j++) {
       var len = arr.length - 1;
@@ -435,29 +436,30 @@ window.onload = function(){
       pstring.forEach(function(e){
         pli += '<li>' + e + '</li>';
       });
+      prize_ul.setAttribute('class','one');
       if(string == '特等奖'){
         document.getElementById('pt').innerHTML = pli;
       }else if(string == '一等奖'){
         document.getElementById('p1').innerHTML = pli;
       }
     }else if(n == 10){
+      prize_ul.setAttribute('class','two');
       localStorage.setItem('二等奖',pz);
       document.getElementById('p2').innerHTML = pli;
     }else if(n == 15){
+      prize_ul.setAttribute('class','three');
       localStorage.setItem('三等奖',pz);
       document.getElementById('p3').innerHTML = pli;
     }else if(n == 20){
       localStorage.setItem('四等奖',pz);
       document.getElementById('p4').innerHTML = pli;
     }
-    document.getElementById('prize-ul').innerHTML = ul;
+    prize_ul.innerHTML = ul;
     document.getElementById('stop').style.display = 'block';
   }
 
   //停止
   function stop(){
-    audio.pause();
-    audio.currentTime = 0;
     pz.forEach(function(el,index){
       var li_id = document.getElementById('prize-ul').children[index];
       for(var i = 0; i < el.length; i++){
